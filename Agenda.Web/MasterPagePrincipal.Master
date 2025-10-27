@@ -1,0 +1,46 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="MasterPagePrincipal.master.cs" Inherits="waAgenda.MasterPagePrincipal" %>
+
+<!DOCTYPE html>
+
+<html>
+<head runat="server">
+    <title></title>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <header>
+            <h1>Agenda Web</h1>
+            <nav>
+                <asp:Menu ID="Menu1" runat="server" BackColor="#E3EAEB" DynamicHorizontalOffset="2" Font-Bold="False" Font-Names="Verdana" Font-Size="1em" ForeColor="#666666" Orientation="Horizontal" StaticSubMenuIndent="10px">
+                    <DynamicHoverStyle BackColor="#666666" ForeColor="White" />
+                    <DynamicMenuItemStyle HorizontalPadding="5px" VerticalPadding="2px" />
+                    <DynamicMenuStyle BackColor="#E3EAEB" />
+                    <DynamicSelectedStyle BackColor="#1C5E55" />
+                    <Items>
+                        <asp:MenuItem NavigateUrl="~/index.aspx" Text="Home" Value="Home"></asp:MenuItem>
+                        <asp:MenuItem NavigateUrl="~/contatos.aspx" Text="Contato" Value="Contato"></asp:MenuItem>
+                        <asp:MenuItem NavigateUrl="~/usuarios.aspx" Text="Usuário" Value="Usuário"></asp:MenuItem>
+                        <asp:MenuItem Text="Tarefas" Value="Tarefas"></asp:MenuItem>
+                        <asp:MenuItem NavigateUrl="~/login.aspx" Text="Sair" Value="Sair"></asp:MenuItem>
+                    </Items>
+                    <StaticHoverStyle BackColor="#666666" ForeColor="White" />
+                    <StaticMenuItemStyle HorizontalPadding="5px" VerticalPadding="2px" />
+                    <StaticSelectedStyle BackColor="#1C5E55" />
+
+                </asp:Menu>
+            </nav>
+        </header>
+        <main>
+            <div>
+                <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+                </asp:ContentPlaceHolder>
+            </div>
+        </main>
+        <footer>
+            <p>Site Desenvolvido por <asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl="http://github.com/isadoraapg" Target="_blank" Font-Bold="False" Font-Overline="False" Font-Underline="False">Isadora P. Galego</asp:HyperLink></p>
+        </footer>
+    </form>
+</body>
+</html>
