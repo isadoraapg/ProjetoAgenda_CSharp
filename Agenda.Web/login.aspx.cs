@@ -5,6 +5,8 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Agenda.Svc;
+using Agenda.Mdl;
 
 namespace Agenda.Web
 {
@@ -12,47 +14,54 @@ namespace Agenda.Web
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            // verifica se ja ta logado
+            if (!IsPostBack)
+            {
+                HttpCookie loginCookie = Request.Cookies["login"];
+                if (loginCookie != null && !string.IsNullOrEmpty(loginCookie.Value))
+                {
+                    // se ta logado, redireciona
+                    Response.Redirect("~/index.aspx");
+                }
+            }
         }
 
         protected void btLogar_Click(object sender, EventArgs e)
         {
-            //verificar se as infos coincidem com o usuario existente
-            String email = tbEmailLogin.Text;
-            String senha = tbSenhaLogin.Text;
-
-            //
-
-            System.Configuration.Configuration rootWebConfig = System.Web.Configuration.WebConfigurationManager.OpenWebConfiguration("/MyWebSiteRoot");
-            System.Configuration.ConnectionStringSettings connString;
-            connString = rootWebConfig.ConnectionStrings.ConnectionStrings["ConnectionString"];
-
-            SqlConnection con = new SqlConnection();
-            con.ConnectionString = connString.ToString();
-            SqlCommand cmd = new SqlCommand();
-            cmd.Connection = con;
-            cmd.CommandText = "Select * from usuario where email = @email and senha = @senha";
-            
-            cmd.Parameters.AddWithValue("email", email);
-            cmd.Parameters.AddWithValue("senha", senha);
-            con.Open();
-
-            //jogar os dados em um data reader - executa o comando e verifica se tem algum registro com os parametros
-            SqlDataReader reader = cmd.ExecuteReader();
-            if (reader.HasRows)
+            try
             {
-                //cria um cookie e armazena o email para saber se o usuario esta conectado ou nao
-                HttpCookie login = new HttpCookie("login", tbEmailLogin.Text);
-                Response.Cookies.Add(login);
+                //verificar se as infos coincidem com o usuario existente
+                String email = tbEmailLogin.Text;
+                String senha = tbSenhaLogin.Text;
 
-                //direcionar para a pagina principal
-                Response.Redirect("~/index.aspx");
+                if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(senha))
+                {
+                    Response.Write("<script>alert('Preencha e-mail e senha.');</script>");
+                    return;
+                }
+
+                bool logado = SvcUsuario.LogarUsuario(email, senha);
+
+
+                if (logado)
+                {
+                    //cria um cookie e armazena o email para saber se o usuario esta conectado ou nao
+                    HttpCookie login = new HttpCookie("login", email);
+                    Response.Cookies.Add(login);
+
+                    //direcionar para a pagina principal
+                    Response.Redirect("~/index.aspx");
+                }
+                else
+                {
+                    Response.Write("<script> alert('E-mail ou senha incorretos'); </script>");
+                    //lMsgLogin.Text = "E-mail ou senha incorretos.";
+                }
             }
-            else
+            catch (Exception ex)
             {
-                Response.Write("<script> alert('E-mail ou senha incorretos'); </script>");
-                //lMsgLogin.Text = "E-mail ou senha incorretos.";
-            }          
+                Response.Write($"<script>alert('Erro ao fazer login: {ex.Message}');</script>");
+            }
         }
     }
 }

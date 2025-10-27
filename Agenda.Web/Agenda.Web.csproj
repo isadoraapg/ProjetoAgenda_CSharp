@@ -74,6 +74,7 @@
     <Content Include="contatos.aspx" />
     <Content Include="index.aspx" />
     <Content Include="login.aspx" />
+    <Content Include="logout.aspx" />
     <Content Include="usuarios.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -98,6 +99,13 @@
     </Compile>
     <Compile Include="login.aspx.designer.cs">
       <DependentUpon>login.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="logout.aspx.cs">
+      <DependentUpon>logout.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="logout.aspx.designer.cs">
+      <DependentUpon>logout.aspx</DependentUpon>
     </Compile>
     <Compile Include="MasterPagePrincipal.Master.cs">
       <DependentUpon>MasterPagePrincipal.Master</DependentUpon>

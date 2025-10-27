@@ -14,6 +14,10 @@ namespace Agenda.Web
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (Request.Cookies["login"] == null)
+            {
+                Response.Redirect("~/login.aspx");
+            }
         }
 
         protected void btInserir_Click(object sender, EventArgs e)

@@ -85,5 +85,27 @@ namespace Agenda.Svc
             }
         }
 
+        internal static bool LogarUsuario(string email, string senha)
+        {
+            try
+            {
+                using (OracleConnection conn = new Conexao().AbrirConexao())
+                {
+                    string sql = "SELECT COUNT(*) FROM usuario WHERE email = :email AND senha = :senha";
+                    using (OracleCommand cmd = new OracleCommand(sql, conn))
+                    {
+                        cmd.Parameters.Add(":email", OracleDbType.Varchar2).Value = email;
+                        cmd.Parameters.Add(":senha", OracleDbType.Varchar2).Value = senha;
+
+                        int count = Convert.ToInt32(cmd.ExecuteScalar());
+                        return count > 0; //true se encontrou usuario
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                return false; 
+            }
+        }
     }
 }
